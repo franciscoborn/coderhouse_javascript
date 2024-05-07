@@ -18,6 +18,9 @@ function fightDamage(character_1, character_2) {
         }
         else {
             let damageDone = Math.floor((0.5 + 0.5 * Math.random()) * (attacker.attack - defender.defense))
+            if (damageDone < 0) {
+                damageDone = 0
+            }
             if (damageDone > defender.health) {
                 damageDone = defender.health
             }
@@ -40,7 +43,7 @@ function healthStatus(character) {
 }
 
 function fightBattle(user, enemy) {
-    maxTurns = 20
+    let maxTurns = 20
     let logStatusEnemy, logFightDamage, turnMessage
     while (user.health > 0 && enemy.health > 0 && maxTurns > 0) {
         logFightDamage = fightDamage(user, enemy)
@@ -51,7 +54,6 @@ function fightBattle(user, enemy) {
         if (enemy.health == 0) {
             let droppedGold = Math.floor(Math.random() * (enemy.gold + 1))
             user.gold = user.gold + droppedGold
-            console.gold = 
             alert("Congratulations, you have won the battle!!\nYou got " + droppedGold.toString() + " gold.\n\nYou have " + user.gold.toString() + " gold in your bag.")
         }
         maxTurns --
@@ -64,6 +66,7 @@ function fightBattle(user, enemy) {
 
 function mainMiniMage() {
     for (let i = 0; i < 5; i++){
+        console.log("If your name has exactly 8 characters, you get a bonus start =D!")
         userName = prompt("Welcome to Mini Mage!! \nWhat is your name?").trim()
         if (userName.length < 1) {
             alert("Invalid name. Try again")
@@ -84,6 +87,18 @@ function mainMiniMage() {
         "gold": 0
     }
     
+    if (userName.length == 8) {
+        console.log("Bonus activated!")
+        userCurrent.health = Math.floor(1.1 * userCurrent.health)
+        userCurrent.attack = Math.floor(1.1 * userCurrent.attack)
+        userCurrent.defense = Math.floor(1.1 * userCurrent.defense)
+        userCurrent.dodge = Math.floor(1.1 * userCurrent.dodge)
+        userCurrent.gold = 10
+    }
+    else {
+        console.log("You did not get the bonus =(")
+    }
+
     let enemyEasy = {
         "name": "Slime",
         "health": 30,
