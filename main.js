@@ -111,7 +111,7 @@ function mainMiniMage() {
     let enemyMedium = {
         "name": "Wolf",
         "health": 60,
-        "attack": 20,
+        "attack": 25,
         "defense": 10,
         "dodge": 30,
         "gold": 20
@@ -120,7 +120,7 @@ function mainMiniMage() {
     let enemyHard = {
         "name": "Bear",
         "health": 100,
-        "attack": 10,
+        "attack": 20,
         "defense": 20,
         "dodge": 10,
         "gold": 30
@@ -133,7 +133,11 @@ function mainMiniMage() {
         if (confirm("A wild " + enemy.name + " appeared.\nDo you want to fight?")) {
             fightInit(userCurrent, enemy)
             fightBattle(userCurrent, enemy)
-        }       
+        }
+        if (userCurrent.health == 0) {
+            alert("You have lost all your hitpoints")
+            break
+        }   
     }
 
     alert("The game is over, thank you for playing Mini Mage!")
