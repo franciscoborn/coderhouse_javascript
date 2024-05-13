@@ -38,17 +38,13 @@ function fightDamage(character_1, character_2) {
     return logFightDamage
 }
 
-function healthStatus(character) {
-    return character.name + " has " + character.health.toString() + " HP"
-}
-
 function fightBattle(user, enemy) {
     let maxTurns = 20
     let logStatusEnemy, logFightDamage, turnMessage
     while (user.health > 0 && enemy.health > 0 && maxTurns > 0) {
         logFightDamage = fightDamage(user, enemy)
-        logStatusUser = healthStatus(user)
-        logStatusEnemy = healthStatus(enemy)
+        logStatusUser = user.healthStatus()
+        logStatusEnemy = enemy.healthStatus()
         turnMessage = [logFightDamage, logStatusUser, logStatusEnemy].join("\n")
         alert(turnMessage)
         if (enemy.health == 0) {
@@ -64,69 +60,78 @@ function fightBattle(user, enemy) {
     alert("Fight ended")
 }
 
-function mainMiniMage() {
-    for (let i = 0; i < 5; i++){
-        console.log("If your name has exactly 8 characters, you get a bonus start =D!")
-        userName = prompt("Welcome to Mini Mage!! \nWhat is your name?").trim()
-        if (userName.length < 1) {
-            alert("Invalid name. Try again")
-            return
-        }
-        else {
-            alert("Nice to meet you " + userName)
-            break
-        }
-    }
-    
-    let userCurrent = {
-        "name": userName,
-        "health": 100,
-        "attack": 20,
-        "defense": 10,
-        "dodge": 10,
-        "gold": 0
-    }
-    
-    if (userName.length == 8) {
-        console.log("Bonus activated!")
-        userCurrent.health = Math.floor(1.1 * userCurrent.health)
-        userCurrent.attack = Math.floor(1.1 * userCurrent.attack)
-        userCurrent.defense = Math.floor(1.1 * userCurrent.defense)
-        userCurrent.dodge = Math.floor(1.1 * userCurrent.dodge)
-        userCurrent.gold = 10
-    }
-    else {
-        console.log("You did not get the bonus =(")
+class Character {
+    constructor(name, health, attack, defense, dodge, gold) {
+        this.name = name;
+        this.health = health;
+        this.attack = attack;
+        this.defense = defense;
+        this.dodge = dodge;
+        this.gold = gold;
     }
 
-    let enemyEasy = {
-        "name": "Slime",
-        "health": 30,
-        "attack": 15,
-        "defense": 5,
-        "dodge": 50,
-        "gold": 10
+    healthStatus() {
+        return this.name + " has " + this.health.toString() + " HP"
     }
-    
-    let enemyMedium = {
-        "name": "Wolf",
-        "health": 60,
-        "attack": 25,
-        "defense": 10,
-        "dodge": 30,
-        "gold": 20
+}
+
+
+function mainMiniMage() {
+    let continueLastGame = confirm("Do you want to continue last game?");
+    let userCurrent, userCurrentString
+    if (continueLastGame) {
+        userCurrentString = localStorage.getItem('userCurrent')
+        if (userCurrentString) {
+            try {
+                userCurrentString = JSON.parse(userCurrentString);
+                userCurrent = new Character(name=userCurrentString.name, health=userCurrentString.health, attack=userCurrentString.attack, defense=userCurrentString.defense, dodge=userCurrentString.dodge, gold=userCurrentString.gold)
+                alert("Welcome back, " + userCurrent.name)
+            }
+            catch (error) {
+                console.log("Could not find a valid saved character")
+                continueLastGame = false;
+            }
+            
+        }
+        else {
+            console.log("Could not find a saved character")
+            continueLastGame = false;
+        }
     }
-    
-    let enemyHard = {
-        "name": "Bear",
-        "health": 100,
-        "attack": 20,
-        "defense": 20,
-        "dodge": 10,
-        "gold": 30
+    if (!continueLastGame) {
+        for (let i = 0; i < 5; i++){
+            console.log("If your name has exactly 8 characters, you get a bonus start =D!")
+            userName = prompt("Welcome to Mini Mage!! \nWhat is your name?").trim()
+            if (userName.length < 1) {
+                alert("Invalid name. Try again")
+                return
+            }
+            else {
+                alert("Nice to meet you " + userName)
+                break
+            }
+        }
+
+        userCurrent = new Character(name=userName, health=100, attack=20, defense=10, dodge=10, gold=0);
+
+        if (userName.length == 8) {
+            console.log("Bonus activated!")
+            userCurrent.health = Math.floor(1.1 * userCurrent.health)
+            userCurrent.attack = Math.floor(1.1 * userCurrent.attack)
+            userCurrent.defense = Math.floor(1.1 * userCurrent.defense)
+            userCurrent.dodge = Math.floor(1.1 * userCurrent.dodge)
+            userCurrent.gold = 10
+        }
+        else {
+            console.log("You did not get the bonus =(")
+        }
     }
+
+    let enemySlime = new Character(name="Slime", health=30, attack=15, defense=5, dodge=50, gold=10)
+    let enemyWolf = new Character(name="Wolf", health=60, attack=25, defense=10, dodge=30, gold=20)
+    let enemyBear = new Character(name="Bear", health=100, attack=0, defense=20, dodge=10, gold=30)
     
-    let arrayEnemies = [enemyEasy, enemyMedium, enemyHard]
+    let arrayEnemies = [enemySlime, enemyWolf, enemyBear]
     let enemy
     for (let i = 0; i < arrayEnemies.length; i++) {
         enemy = arrayEnemies[i]
@@ -134,12 +139,21 @@ function mainMiniMage() {
             fightInit(userCurrent, enemy)
             fightBattle(userCurrent, enemy)
         }
+        else {
+            break;
+        }
         if (userCurrent.health == 0) {
             alert("You have lost all your hitpoints")
             break
         }   
     }
-
+    if (userCurrent) {
+        console.log("Saving your game")
+        localStorage.setItem("userCurrent", JSON.stringify(userCurrent))
+        if (userCurrent.health == 0) {
+            localStorage.removeItem("userCurrent")
+        }
+    }
     alert("The game is over, thank you for playing Mini Mage!")
 }
 
