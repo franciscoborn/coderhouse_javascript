@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
     <title>Mini Mage</title>
 </head>
 <body>
-    
+    <button id="btn-new-game">New Game</button>
+    <button id="btn-load-game">Load Game</button>
+    <button id="btn-save-game">Save Game</button>
+    <div id="window-new-game" hidden>
+        <input type="text" id="text-player-name" placeholder="What is your name?">
+        <button id="btn-confirm-name">Confirm Name</button>
+    </div>
+    <div id="window-main-game" hidden>
+        <h2 id="h2-current-user">Current User:</h2>
+        <div id="container-user-status"></div>
+        <id id="container-enemies">
+            <div class="card-enemy"></div>
+        </id>
+    </div>
 </body>
 </html>

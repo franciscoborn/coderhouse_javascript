@@ -1,0 +1,13 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+.card-enemy {
+    color: black;
+    background-color: beige;
+    border: 3px solid black;
+    padding: 5px;
+    text-align: center;
+
+}
