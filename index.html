@@ -8,9 +8,12 @@
     <title>Mini Mage</title>
 </head>
 <body>
-    <button id="btn-new-game">New Game</button>
-    <button id="btn-load-game">Load Game</button>
-    <button id="btn-save-game">Save Game</button>
+    <div id="window-control-new-game">
+        <button id="btn-new-game">New Game</button>
+        <button id="btn-load-game">Load Game</button>
+        <button id="btn-save-game">Save Game</button>
+    </div>
+    
     <div id="window-new-game" hidden>
         <input type="text" id="text-player-name" placeholder="What is your name?">
         <button id="btn-confirm-name">Confirm Name</button>
@@ -18,6 +21,12 @@
     <div id="window-main-game" hidden>
         <h2 id="h2-current-user">Current User:</h2>
         <div id="container-user-status"></div>
+        <h2>Shop Items</h2>
+        <id id="container-shop-items">
+            <div class="card-shop-item"></div>
+        </id>
+        <h2> Enemies Found </h2>
+        <button id="btn-search-enemy">Search Enemy</button>
         <id id="container-enemies">
             <div class="card-enemy"></div>
         </id>
